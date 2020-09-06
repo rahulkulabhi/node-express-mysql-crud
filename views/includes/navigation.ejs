@@ -9,8 +9,33 @@
             <li class="nav-item <% if (url === '/') { %>active<% } %>">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item <% if (url === '/products') { %>active<% } %>">
-                <a class="nav-link" href="/products">Products</a>
+            <li class="nav-item <% if (url === '/products') { %>active<% } %> dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="productDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Products
+                </a>
+                <div class="dropdown-menu" aria-labelledby="productDropdownMenuLink" style="background-color: #007bff;">
+                    <a class="nav-link" href="/products">Products</a>
+                    <% if (isUserLoggedIn) { %>
+                    <a class="nav-link" href="/products/add">Add Product</a>
+                    <% } %>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="accountDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="accountDropdownMenuLink" style="background-color: #007bff;">
+                    <% if (isUserLoggedIn) { %>
+                    <form name="logout_form" method="POST" action="/logout">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                    </form>
+                    <a class="nav-link" onclick="$('form[name=logout_form]').submit();" href="#">Logout</a>
+                    <% } else { %>
+                    <a class="nav-link" href="/signup">Signup</a>
+                    <a class="nav-link" href="/login">Login</a>
+                    <% } %>
+                </div>
             </li>
         </ul>
     </div>

@@ -10,7 +10,9 @@
                 <h6 class="card-subtitle mb-2">$<%= product.price.toFixed(2) %></h6>
                 <p class="card-text"><%= product.description %></p>
                 <a href="#" class="btn btn-primary">Add To Cart</a>
+                <% if (isUserLoggedIn) { %>
                 <a href="/products/edit/<%= product.id %>" class="card-link">Edit</a>
+                <% } %>
             </div>
         </div>
     </div>

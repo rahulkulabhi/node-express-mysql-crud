@@ -6,7 +6,8 @@
         <div class="col-sm-10 offset-sm-1">
             <h3><%= pageTitle %></h3>
             <div class="info-form">
-                <form method="POST" action="<%= url %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                    <input type="hidden" name="_csrf" value="<% csrfToken %>"/>
                     <div class="form-group">
                         <label>Title</label>
                         <input type="text" name="title" class="form-control" value="<%= product.title %>"/>
@@ -45,6 +46,7 @@
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 <form action="/products/delete/<%= product.id %>" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
 <button type="submit" class="btn btn-danger">Delete</button>
 </form>
 </div>

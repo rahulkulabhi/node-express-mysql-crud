@@ -31,7 +31,17 @@ exports.add = (request, response, next) => {
         });
     } else if (request.method == "POST") {
         // console.log(request.body);
+        // console.log(request.session.user);
+        /*
         Product.create({
+            title: request.body.title,
+            price: request.body.price,
+            description: request.body.description,
+            imgUrl: request.body.imgUrl,
+            userId: request.session.user.id
+        })
+        */
+        request.user.createProduct({
             title: request.body.title,
             price: request.body.price,
             description: request.body.description,
