@@ -6,6 +6,7 @@ const session = require('express-session');
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 const sequelize = require("./util/database");
 const frontRoutes = require('./routes/frontend');
@@ -14,7 +15,6 @@ const errorCtrl = require('./controllers/error404');
 
 const Product = require('./models/product');
 const User = require('./models/user');
-const { response } = require('express');
 
 const app = express();
 
@@ -24,11 +24,39 @@ const sessionStore = new SequelizeStore({
                 
 const csrfProtection = csrf();
 
+// multer checking
+const fileStorage = multer.diskStorage({
+    destination: (request, file, cb) => {
+        cb(null, 'uploads');
+    },
+    filename: (request, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+const fileFilter = (request, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const extname =  filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if(mimetype && extname){
+        return cb(null,true);
+    }else{
+        cb('Error: Unsupported image file!');
+    }
+};
+var upload = multer({ 
+    storage: fileStorage, 
+    fileFilter: fileFilter, 
+    limits : {
+        fileSize : 1000000 // max 1 MB size
+    } 
+});
+
 // setting app variables
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 // middlewares goes here
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(upload.single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'mysecret', store: sessionStore, resave: false, saveUninitialized: false}));
 app.use(flash());
@@ -64,11 +92,8 @@ app.use(frontRoutes);
 app.get("/500", errorCtrl.err500);
 app.use(errorCtrl.err404);
 app.use((error, request, response, next) => {
-    response.status(500).render("500", {
-        pageTitle: "500 Error!",
-        url: "/500",
-        isAuthenticated: request.session.loggedIn
-    });
+    console.log(error);
+    response.redirect("/500");
 });
 
 // sequelization association
