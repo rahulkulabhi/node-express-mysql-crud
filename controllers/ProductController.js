@@ -3,13 +3,18 @@ const Product = require("../models/product");
 exports.productsList = (request, response, next) => {
     Product.findAll()
     .then((products) => {
+        // throw new Error("testing error!");
         response.render('products/list', {
             pageTitle: 'Product List',
             products: products,
             url: '/products'
         });
     })
-    .catch(err => {console.log(err);});
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
     /*
     Product.getProducts()
     .then(([rows, data]) => {
@@ -51,7 +56,11 @@ exports.add = (request, response, next) => {
             // console.log(result);
             response.redirect("/products/add");
         })
-        .catch(err => {console.log("ERROR FROM CATCH BLOCK", err);});
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
         /*
         const product = new Product(request.body.title, request.body.price, request.body.description, request.body.imgUrl);
         product
@@ -74,7 +83,11 @@ exports.getProduct = (request, response, next) => {
             product: product.dataValues
         });
     })
-    .catch(err => {console.log(err);});
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.editProduct = (request, response, next) => {
@@ -88,7 +101,11 @@ exports.editProduct = (request, response, next) => {
                 product: product.dataValues
             });
         })
-        .catch(err => {console.log(err);});
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
     } else if(request.method == "POST"){
         //console.log(request.body);
         Product.update({
@@ -105,7 +122,11 @@ exports.editProduct = (request, response, next) => {
             // console.log(result);
             response.redirect("/products/" + id);
         })
-        .catch(err => {console.log(err);});
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
     }
 };
 
@@ -119,5 +140,9 @@ exports.delete = (request, response, next) => {
         // console.log("Product deleted of id: " + id);
         response.redirect("/products/");
     })
-    .catch(err => {console.log(err);});
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };

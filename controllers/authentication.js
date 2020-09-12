@@ -43,7 +43,11 @@ exports.signup = (request, response, next) => {
                 });
                 response.redirect('/login');
             })
-            .catch(err => {console.log(err);});
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
         }
         /*
         User.findOne({where: {email: email}})
@@ -118,7 +122,11 @@ exports.login = (request, response, next) => {
                     response.redirect('/');
                 });
             })
-            .catch(err => {console.log(err);});
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
         }
         /*
         User.findOne({where: {email: email}})
@@ -202,7 +210,11 @@ exports.resetPassword = (request, response, next) => {
                     });
                     response.redirect('/');
                 })
-                .catch(err => {console.log(err);});
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                });
             });
         }
         /*
@@ -280,7 +292,11 @@ exports.changePassword = (request, response, next) => {
             validationErrors: []
         });
     })
-    .catch(err => {console.log(err);});
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 };
 
 exports.newPassword = (request, response, next) => {
@@ -321,7 +337,11 @@ exports.newPassword = (request, response, next) => {
         .then(result => {
             response.redirect('/login');
         })
-        .catch(err => {console.log(err);});
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
     }
     
 };
