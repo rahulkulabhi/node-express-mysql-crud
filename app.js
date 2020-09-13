@@ -58,6 +58,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(upload.single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(session({secret: 'mysecret', store: sessionStore, resave: false, saveUninitialized: false}));
 app.use(flash());
 app.use(csrfProtection);

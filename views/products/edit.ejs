@@ -23,7 +23,7 @@
                         <input type="text" name="price" class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'is-invalid' : '' %>" value="<%= oldValues.price ? oldValues.price : product.price %>"/>
                     </div>
                     <% if (product.imgUrl != '') { %>
-                        <img src="<%= product.imgUrl %>" class="img-fluid"/>
+                        <img src="/<%= product.imgUrl %>" class="img-fluid"/>
                     <% } %>
                     <div class="form-group">
                         <label>Image</label>
